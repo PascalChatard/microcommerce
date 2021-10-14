@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ecommerce.microcommerce.dao.IProductDao;
 import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -30,8 +31,11 @@ public class ProductController {
 	// Un produit
 
 	@GetMapping(value = "/Produits/{id}")
-	public Product afficherUnProduit(@PathVariable int id) {
+	public Product afficherUnProduit(@PathVariable int id) throws ProduitIntrouvableException {
 		Product product = productDao.findById(id);
+		if (product == null)
+			throw new ProduitIntrouvableException(
+					"Le produit avec l'id " + id + " est INTROUVABLE. Écran Bleu si je pouvais.");
 		return product;
 	}
 
@@ -95,9 +99,9 @@ public class ProductController {
 		productDao.delete(productDao.findById(id));
 	}
 
-	@PutMapping(value = "/Produits")
-	public void updateProduit(@RequestBody Product product) {
-
+	@PutMapping(value = "/Produits/{id}")
+	public void updateProduit(@RequestBody Product product, @PathVariable int id) {
+		// Product product = productDao.findById(id);
 		productDao.save(product);
 	}
 }
