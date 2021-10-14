@@ -3,8 +3,10 @@ package com.ecommerce.microcommerce.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Product {
@@ -14,8 +16,13 @@ public class Product {
 	@GenericGenerator(name = "generator", strategy = "increment")
 	@GeneratedValue(generator = "generator")
 	private int id;
+
+	@Length(min = 3, max = 20)
 	private String nom;
+
+	@Min(value = 1)
 	private int prix;
+
 	private int prixAchat;
 
 	public Product() {

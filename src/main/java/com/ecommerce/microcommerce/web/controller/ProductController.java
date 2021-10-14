@@ -3,6 +3,8 @@ package com.ecommerce.microcommerce.web.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -84,7 +86,7 @@ public class ProductController {
 	 */
 
 	@PostMapping(value = "/Produits")
-	public ResponseEntity<Void> ajouterProduit(@RequestBody Product product) {
+	public ResponseEntity<Void> ajouterProduit(@Valid @RequestBody Product product) {
 		Product addProduct = productDao.save(product);
 		if (addProduct == null)
 			return ResponseEntity.noContent().build();
